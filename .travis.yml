@@ -13,7 +13,7 @@ after_success:
   - docker build -t jamespsteinberg/multinginx ./nginx
   - docker build -t jamespsteinberg/multiserver ./server
   - docker build -t jamespsteinberg/multiworker ./worker
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push jamespsteinberg/multiclient
   - docker push jamespsteinberg/multinginx
   - docker push jamespsteinberg/multiserver
