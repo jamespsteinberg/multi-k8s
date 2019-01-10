@@ -18,3 +18,16 @@ after_success:
   - docker push jamespsteinberg/multinginx
   - docker push jamespsteinberg/multiserver
   - docker push jamespsteinberg/multiworker
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: multidocker
+  env: Multidocker-env
+  bucket_name: elasticbeanstalk-us-east-1-365338374368
+  bucket_path: multidocker
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
