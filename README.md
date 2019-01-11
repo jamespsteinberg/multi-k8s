@@ -91,3 +91,16 @@ kubectl apply -f k8s
 docker build -t jamespsteinberg/multiclient .
 docker push jamespsteinberg/multiclient
 ```
+
+# CONNECT WITH TRAVIS CI
+```
+# Copy repo into new ruby container in folder app
+docker run -it -v $(pwd):/app ruby:2.3 sh
+
+cd app
+gem install travis
+travis login
+# encrypt google cloud password file
+travis encrypt-file service-account.json -r jamespsteinberg/multi-k8s
+# Follow instructions to add command to .yaml file under BEFORE_INSTALL, delete service-account.json file (and definitely don't put it in git repo) and add encrypted file to repo
+```
