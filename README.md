@@ -104,3 +104,25 @@ travis login
 travis encrypt-file service-account.json -r jamespsteinberg/multi-k8s
 # Follow instructions to add command to .yaml file under BEFORE_INSTALL, delete service-account.json file (and definitely don't put it in git repo) and add encrypted file to repo
 ```
+
+# Google Cloud SSH in
+```
+# set project to cluster ID
+gcloud config set project multi-k8s-228322
+gcloud config set compute/zone us-central1-a
+gcloud container clusters get-credentials standard-cluster-1
+
+kubectl create secret generic pgpassword --from-literal <PASSWORD_KEY>=<PASSWORD_VALUE_HERE>
+
+# install helm
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+
+# tiller/rbac
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-role --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+helm init --service-account tiller --upgrade
+helm install stable/nginx-ingress --name my-nginx --set rbac.create=true
+```
